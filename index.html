@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comeketo Catering — Let's Plan Your Event!</title>
+<meta name="description" content="Comeketo Catering: Brazilian BBQ & Catering. Tell us about your event and get a special prize!">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1a2332;
+  --navy-light: #243044;
+  --navy-dark: #111827;
+  --gold: #c9a54e;
+  --gold-light: #dbbf6e;
+  --gold-dark: #a8883a;
+  --white: #ffffff;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-500: #6b7280;
+  --gray-700: #374151;
+  --red: #ef4444;
+  --green: #22c55e;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--navy-dark);
+  color: var(--white);
+  line-height: 1.6;
+  min-height: 100vh;
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(201,165,78,0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(201,165,78,0.02) 0%, transparent 50%);
+}
+
+/* ANIMATIONS */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 5px rgba(201,165,78,0.3); }
+  50% { box-shadow: 0 0 20px rgba(201,165,78,0.5), 0 0 40px rgba(201,165,78,0.15); }
+}
+@keyframes confetti {
+  0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+  100% { opacity: 0; transform: translateY(-200px) rotate(720deg); }
+}
+@keyframes successPop {
+  0% { transform: scale(0.5); opacity: 0; }
+  60% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.shimmer-text {
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 25%, #fff5cc 50%, var(--gold-light) 75%, var(--gold) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s linear infinite;
+}
+
+/* HERO */
+.hero {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+  text-align: center;
+  padding: 50px 20px 35px;
+  border-bottom: 3px solid var(--gold);
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle at 30% 40%, rgba(201,165,78,0.08) 0%, transparent 50%),
+              radial-gradient(circle at 70% 60%, rgba(201,165,78,0.05) 0%, transparent 50%);
+  pointer-events: none;
+}
+.hero-emoji {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 10px;
+  animation: float 3s ease-in-out infinite;
+  filter: drop-shadow(0 4px 12px rgba(201,165,78,0.4));
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.6rem, 5vw, 2.8rem);
+  letter-spacing: 4px;
+  margin-bottom: 6px;
+}
+.hero .tagline {
+  font-size: 1rem;
+  color: var(--gray-300);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 300;
+}
+
+/* PRIZE BANNER */
+.prize-banner {
+  background: linear-gradient(135deg, rgba(201,165,78,0.15), rgba(201,165,78,0.05));
+  border: 1px solid rgba(201,165,78,0.3);
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  margin: 25px auto;
+  max-width: 500px;
+  animation: fadeInUp 0.8s ease;
+}
+.prize-banner .prize-emoji {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 8px;
+}
+.prize-banner h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  color: var(--gold-light);
+  margin-bottom: 6px;
+}
+.prize-banner p {
+  font-size: 0.9rem;
+  color: var(--gray-300);
+}
+
+/* CONTAINER */
+.container {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 0 20px 40px;
+}
+
+/* FORM */
+.form-card {
+  background: rgba(36, 48, 68, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(201,165,78,0.12);
+  border-radius: 20px;
+  padding: 30px 24px;
+  animation: fadeInUp 0.6s ease;
+}
+.form-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--gold-light);
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--gray-300);
+  margin-bottom: 6px;
+}
+.form-group label .required {
+  color: var(--gold);
+}
+
+.form-input,
+.form-select {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--navy);
+  border: 1px solid rgba(201,165,78,0.2);
+  color: var(--white);
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.form-input:focus,
+.form-select:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 12px rgba(201,165,78,0.2);
+}
+.form-input::placeholder {
+  color: var(--gray-500);
+}
+
+/* Custom select arrow */
+.select-wrapper {
+  position: relative;
+}
+.select-wrapper::after {
+  content: '▼';
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gold);
+  font-size: 0.7rem;
+  pointer-events: none;
+}
+.form-select {
+  padding-right: 36px;
+  cursor: pointer;
+}
+.form-select option {
+  background: var(--navy);
+  color: var(--white);
+}
+
+/* Submit button */
+.btn-submit {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: var(--navy);
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 15px rgba(201,165,78,0.3);
+  margin-top: 8px;
+  position: relative;
+  overflow: hidden;
+}
+.btn-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(201,165,78,0.4);
+}
+.btn-submit:active {
+  transform: translateY(0);
+}
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+.btn-submit .spinner {
+  display: none;
+  width: 20px;
+  height: 20px;
+  border: 3px solid var(--navy);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.btn-submit.loading .btn-text { display: none; }
+.btn-submit.loading .spinner { display: block; }
+
+/* Validation */
+.form-input.error,
+.form-select.error {
+  border-color: var(--red);
+  box-shadow: 0 0 8px rgba(239,68,68,0.2);
+}
+.error-msg {
+  color: var(--red);
+  font-size: 0.75rem;
+  margin-top: 4px;
+  display: none;
+}
+.error-msg.visible {
+  display: block;
+}
+
+/* SUCCESS SCREEN */
+.success-screen {
+  display: none;
+  text-align: center;
+  padding: 40px 20px;
+  animation: successPop 0.6s ease;
+}
+.success-screen.show {
+  display: block;
+}
+.success-icon {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 16px;
+}
+.success-screen h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  color: var(--gold-light);
+  margin-bottom: 12px;
+}
+.success-screen p {
+  color: var(--gray-300);
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+.success-screen .prize-note {
+  background: linear-gradient(135deg, rgba(34,197,94,0.12), rgba(34,197,94,0.05));
+  border: 1px solid rgba(34,197,94,0.3);
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: var(--green);
+}
+.success-screen .social-links {
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.success-screen .social-links a {
+  color: var(--gold);
+  text-decoration: none;
+  padding: 10px 18px;
+  border: 1px solid rgba(201,165,78,0.3);
+  border-radius: 10px;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+}
+.success-screen .social-links a:hover {
+  background: rgba(201,165,78,0.1);
+  border-color: var(--gold);
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 30px 20px;
+  border-top: 1px solid rgba(201,165,78,0.15);
+  margin-top: 20px;
+}
+footer .contact-row {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+footer a {
+  color: var(--gray-300);
+  text-decoration: none;
+  font-size: 0.88rem;
+  transition: color 0.3s;
+}
+footer a:hover { color: var(--gold); }
+footer .legal {
+  color: var(--gray-500);
+  font-size: 0.75rem;
+  margin-top: 10px;
+}
+
+/* Language Toggle */
+.lang-toggle {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 14px;
+}
+.lang-btn {
+  background: transparent;
+  border: 1px solid rgba(201,165,78,0.15);
+  color: var(--gray-500);
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Inter', sans-serif;
+}
+.lang-btn:hover, .lang-btn.active {
+  color: var(--gold);
+  border-color: var(--gold);
+  background: rgba(201,165,78,0.1);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .hero { padding: 35px 15px 25px; }
+  .hero h1 { letter-spacing: 2px; }
+  .form-card { padding: 24px 18px; }
+  .prize-banner { margin: 20px 15px; padding: 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <span class="hero-emoji">🔥</span>
+  <h1 class="shimmer-text" data-i18n="heroTitle">COMEKETO CATERING</h1>
+  <p class="tagline" data-i18n="heroTagline">Brazilian BBQ & Catering</p>
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">🇺🇸 EN</button>
+    <button class="lang-btn" data-lang="es" onclick="setLang('es')">🇪🇸 ES</button>
+    <button class="lang-btn" data-lang="pt" onclick="setLang('pt')">🇧🇷 PT</button>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- PRIZE BANNER -->
+  <div class="prize-banner">
+    <span class="prize-emoji">🎁</span>
+    <h2 data-i18n="prizeTitle">Fill Out This Form & Get a Prize!</h2>
+    <p data-i18n="prizeSub">Tell us about your event — it only takes 30 seconds</p>
+  </div>
+
+  <!-- FORM -->
+  <div class="form-card" id="formCard">
+    <h3 data-i18n="formTitle">📋 Tell Us About Your Event</h3>
+
+    <form id="leadForm" onsubmit="return handleSubmit(event)">
+      <!-- Name -->
+      <div class="form-group">
+        <label data-i18n="labelName">Full Name <span class="required">*</span></label>
+        <input type="text" class="form-input" id="fullName" name="fullName" placeholder="John Smith" required autocomplete="name">
+        <div class="error-msg" id="nameError" data-i18n="errorName">Please enter your name</div>
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label data-i18n="labelEmail">Email <span class="required">*</span></label>
+        <input type="email" class="form-input" id="email" name="email" placeholder="john@example.com" required autocomplete="email">
+        <div class="error-msg" id="emailError" data-i18n="errorEmail">Please enter a valid email</div>
+      </div>
+
+      <!-- Phone -->
+      <div class="form-group">
+        <label data-i18n="labelPhone">Phone Number <span class="required">*</span></label>
+        <input type="tel" class="form-input" id="phone" name="phone" placeholder="(555) 123-4567" required autocomplete="tel">
+        <div class="error-msg" id="phoneError" data-i18n="errorPhone">Please enter your phone number</div>
+      </div>
+
+      <!-- Event Type -->
+      <div class="form-group">
+        <label data-i18n="labelEventType">What Type of Event? <span class="required">*</span></label>
+        <div class="select-wrapper">
+          <select class="form-select" id="eventType" name="eventType" required>
+            <option value="" disabled selected data-i18n="selectDefault">Select your event type...</option>
+            <option value="Wedding">Wedding</option>
+            <option value="Corporate Event">Corporate Event</option>
+            <option value="Birthday Party">Birthday Party</option>
+            <option value="Graduation">Graduation</option>
+            <option value="Baby Shower">Baby Shower</option>
+            <option value="Bridal Shower">Bridal Shower</option>
+            <option value="Holiday Party">Holiday Party</option>
+            <option value="Anniversary">Anniversary</option>
+            <option value="Fundraiser / Gala">Fundraiser / Gala</option>
+            <option value="Family Reunion">Family Reunion</option>
+            <option value="Memorial / Celebration of Life">Memorial / Celebration of Life</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="error-msg" id="eventTypeError" data-i18n="errorEventType">Please select an event type</div>
+      </div>
+
+      <!-- Guest Count -->
+      <div class="form-group">
+        <label data-i18n="labelGuests">Estimated Number of Guests <span class="required">*</span></label>
+        <div class="select-wrapper">
+          <select class="form-select" id="guestCount" name="guestCount" required>
+            <option value="" disabled selected data-i18n="selectGuestsDefault">How many guests?</option>
+            <option value="20-50">20 – 50</option>
+            <option value="50-100">50 – 100</option>
+            <option value="100-150">100 – 150</option>
+            <option value="150-200">150 – 200</option>
+            <option value="200-300">200 – 300</option>
+            <option value="300+">300+</option>
+          </select>
+        </div>
+        <div class="error-msg" id="guestCountError" data-i18n="errorGuests">Please select guest count</div>
+      </div>
+
+      <!-- Event Date -->
+      <div class="form-group">
+        <label data-i18n="labelDate">Approximate Event Date</label>
+        <input type="text" class="form-input" id="eventDate" name="eventDate" placeholder="e.g. June 2026, Summer 2026">
+      </div>
+
+      <!-- Venue -->
+      <div class="form-group">
+        <label data-i18n="labelVenue">Venue (if you have one)</label>
+        <input type="text" class="form-input" id="venue" name="venue" placeholder="Venue name or 'Still looking'">
+      </div>
+
+      <!-- How did you hear -->
+      <div class="form-group">
+        <label data-i18n="labelHowHeard">How Did You Hear About Us?</label>
+        <div class="select-wrapper">
+          <select class="form-select" id="howHeard" name="howHeard">
+            <option value="" selected data-i18n="selectHowDefault">Select one (optional)...</option>
+            <option value="This Expo/Event">This Expo/Event</option>
+            <option value="Word of Mouth">Word of Mouth</option>
+            <option value="Google Search">Google Search</option>
+            <option value="Social Media">Social Media</option>
+            <option value="Wedding Wire / The Knot">Wedding Wire / The Knot</option>
+            <option value="Venue Referral">Venue Referral</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div class="form-group">
+        <label data-i18n="labelNotes">Anything Else We Should Know?</label>
+        <input type="text" class="form-input" id="notes" name="notes" placeholder="Dietary needs, special requests, etc.">
+      </div>
+
+      <!-- Hidden: source tracking -->
+      <input type="hidden" id="source" name="source" value="expo">
+      <input type="hidden" id="capturedAt" name="capturedAt">
+
+      <!-- Submit -->
+      <button type="submit" class="btn-submit" id="submitBtn">
+        <span class="btn-text" data-i18n="submitBtn">🎁 Submit & Get Your Prize!</span>
+        <div class="spinner"></div>
+      </button>
+    </form>
+  </div>
+
+  <!-- SUCCESS SCREEN -->
+  <div class="success-screen" id="successScreen">
+    <span class="success-icon">🎉</span>
+    <h2 data-i18n="successTitle">You're In!</h2>
+    <p data-i18n="successMsg">Thanks for stopping by our booth. We'll be in touch soon!</p>
+    <div class="prize-note">
+      <span data-i18n="prizeInstructions">🎁 Show this screen at our booth to claim your prize!</span>
+    </div>
+    <div class="social-links">
+      <a href="tel:+19783811212">📞 978-381-1212</a>
+      <a href="https://comeketocatering.com" target="_blank">🌐 comeketocatering.com</a>
+      <a href="https://www.instagram.com/comeketocatering/" target="_blank">📸 Instagram</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="contact-row">
+    <a href="tel:+19783811212">📞 978-381-1212</a>
+    <a href="mailto:team@comeketocatering.com">✉️ team@comeketocatering.com</a>
+  </div>
+  <a href="https://comeketocatering.com" target="_blank" style="color:var(--gold);">comeketocatering.com</a>
+  <p class="legal">© 2026 Comeketo Catering · 199 Main St, Fitchburg, MA</p>
+</footer>
+
+<script>
+// ===== GOOGLE SHEETS INTEGRATION =====
+// INSTRUCTIONS: Create a Google Apps Script web app and paste the URL below.
+// See setup-instructions.md for step-by-step guide.
+const GOOGLE_SHEETS_URL = ''; // <-- PASTE YOUR APPS SCRIPT WEB APP URL HERE
+
+// ===== FORM HANDLING =====
+function handleSubmit(e) {
+  e.preventDefault();
+
+  // Validate
+  const fields = [
+    { id: 'fullName', errorId: 'nameError', validate: v => v.trim().length > 0 },
+    { id: 'email', errorId: 'emailError', validate: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) },
+    { id: 'phone', errorId: 'phoneError', validate: v => v.replace(/\D/g, '').length >= 7 },
+    { id: 'eventType', errorId: 'eventTypeError', validate: v => v !== '' },
+    { id: 'guestCount', errorId: 'guestCountError', validate: v => v !== '' }
+  ];
+
+  let valid = true;
+  fields.forEach(f => {
+    const input = document.getElementById(f.id);
+    const error = document.getElementById(f.errorId);
+    const val = input.value;
+    if (!f.validate(val)) {
+      input.classList.add('error');
+      error.classList.add('visible');
+      valid = false;
+    } else {
+      input.classList.remove('error');
+      error.classList.remove('visible');
+    }
+  });
+
+  if (!valid) return false;
+
+  // Set timestamp
+  document.getElementById('capturedAt').value = new Date().toISOString();
+
+  // Collect data
+  const data = {
+    fullName: document.getElementById('fullName').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    phone: document.getElementById('phone').value.trim(),
+    eventType: document.getElementById('eventType').value,
+    guestCount: document.getElementById('guestCount').value,
+    eventDate: document.getElementById('eventDate').value.trim(),
+    venue: document.getElementById('venue').value.trim(),
+    howHeard: document.getElementById('howHeard').value,
+    notes: document.getElementById('notes').value.trim(),
+    source: document.getElementById('source').value,
+    capturedAt: document.getElementById('capturedAt').value
+  };
+
+  // Show loading
+  const btn = document.getElementById('submitBtn');
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  // Send to Google Sheets
+  if (GOOGLE_SHEETS_URL) {
+    fetch(GOOGLE_SHEETS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(() => {
+      showSuccess();
+    }).catch(err => {
+      console.error('Sheet error:', err);
+      // Still show success — data might have gone through (no-cors)
+      showSuccess();
+    });
+  } else {
+    // Fallback: store locally & show success
+    console.log('Lead captured (no backend configured):', data);
+    storeLocally(data);
+    showSuccess();
+  }
+
+  return false;
+}
+
+function storeLocally(data) {
+  // Backup: store in localStorage in case Sheets isn't set up
+  const leads = JSON.parse(localStorage.getItem('comeketo_expo_leads') || '[]');
+  leads.push(data);
+  localStorage.setItem('comeketo_expo_leads', JSON.stringify(leads));
+}
+
+function showSuccess() {
+  document.getElementById('formCard').style.display = 'none';
+  document.querySelector('.prize-banner').style.display = 'none';
+  const screen = document.getElementById('successScreen');
+  screen.classList.add('show');
+
+  // Confetti burst
+  createConfetti();
+}
+
+function createConfetti() {
+  const colors = ['#c9a54e', '#dbbf6e', '#fff5cc', '#22c55e', '#ef4444', '#3b82f6'];
+  const container = document.body;
+  for (let i = 0; i < 40; i++) {
+    const confetti = document.createElement('div');
+    confetti.style.cssText = `
+      position: fixed;
+      width: ${Math.random() * 10 + 5}px;
+      height: ${Math.random() * 10 + 5}px;
+      background: ${colors[Math.floor(Math.random() * colors.length)]};
+      left: ${Math.random() * 100}vw;
+      top: 100vh;
+      border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+      pointer-events: none;
+      z-index: 9999;
+      animation: confetti ${Math.random() * 2 + 1.5}s ease-out forwards;
+      animation-delay: ${Math.random() * 0.5}s;
+    `;
+    container.appendChild(confetti);
+    setTimeout(() => confetti.remove(), 4000);
+  }
+}
+
+// ===== PHONE FORMATTING =====
+document.getElementById('phone').addEventListener('input', function(e) {
+  let val = e.target.value.replace(/\D/g, '');
+  if (val.length > 10) val = val.slice(0, 10);
+  if (val.length >= 7) {
+    e.target.value = `(${val.slice(0,3)}) ${val.slice(3,6)}-${val.slice(6)}`;
+  } else if (val.length >= 4) {
+    e.target.value = `(${val.slice(0,3)}) ${val.slice(3)}`;
+  } else if (val.length >= 1) {
+    e.target.value = `(${val}`;
+  }
+});
+
+// Clear error on input
+document.querySelectorAll('.form-input, .form-select').forEach(el => {
+  el.addEventListener('input', function() {
+    this.classList.remove('error');
+    const errorEl = this.parentElement.querySelector('.error-msg') ||
+                    this.closest('.form-group').querySelector('.error-msg');
+    if (errorEl) errorEl.classList.remove('visible');
+  });
+  el.addEventListener('change', function() {
+    this.classList.remove('error');
+    const errorEl = this.closest('.form-group').querySelector('.error-msg');
+    if (errorEl) errorEl.classList.remove('visible');
+  });
+});
+
+// ===== ADMIN: Export stored leads =====
+// Type exportLeads() in console to download CSV of locally stored leads
+function exportLeads() {
+  const leads = JSON.parse(localStorage.getItem('comeketo_expo_leads') || '[]');
+  if (!leads.length) { alert('No leads stored locally'); return; }
+  const headers = Object.keys(leads[0]);
+  const csv = [
+    headers.join(','),
+    ...leads.map(l => headers.map(h => `"${(l[h]||'').replace(/"/g, '""')}"`).join(','))
+  ].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `comeketo-expo-leads-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ===== TRANSLATIONS =====
+const translations = {
+  en: {
+    heroTitle: 'COMEKETO CATERING',
+    heroTagline: 'Brazilian BBQ & Catering',
+    prizeTitle: 'Fill Out This Form & Get a Prize!',
+    prizeSub: 'Tell us about your event — it only takes 30 seconds',
+    formTitle: '📋 Tell Us About Your Event',
+    labelName: 'Full Name <span class="required">*</span>',
+    labelEmail: 'Email <span class="required">*</span>',
+    labelPhone: 'Phone Number <span class="required">*</span>',
+    labelEventType: 'What Type of Event? <span class="required">*</span>',
+    labelGuests: 'Estimated Number of Guests <span class="required">*</span>',
+    labelDate: 'Approximate Event Date',
+    labelVenue: 'Venue (if you have one)',
+    labelHowHeard: 'How Did You Hear About Us?',
+    labelNotes: 'Anything Else We Should Know?',
+    selectDefault: 'Select your event type...',
+    selectGuestsDefault: 'How many guests?',
+    selectHowDefault: 'Select one (optional)...',
+    errorName: 'Please enter your name',
+    errorEmail: 'Please enter a valid email',
+    errorPhone: 'Please enter your phone number',
+    errorEventType: 'Please select an event type',
+    errorGuests: 'Please select guest count',
+    submitBtn: '🎁 Submit & Get Your Prize!',
+    successTitle: "You're In!",
+    successMsg: "Thanks for stopping by our booth. We'll be in touch soon!",
+    prizeInstructions: '🎁 Show this screen at our booth to claim your prize!'
+  },
+  es: {
+    heroTitle: 'COMEKETO CATERING',
+    heroTagline: 'BBQ Brasileño y Catering',
+    prizeTitle: '¡Llena este formulario y recibe un premio!',
+    prizeSub: 'Cuéntanos sobre tu evento — solo toma 30 segundos',
+    formTitle: '📋 Cuéntanos Sobre Tu Evento',
+    labelName: 'Nombre Completo <span class="required">*</span>',
+    labelEmail: 'Correo Electrónico <span class="required">*</span>',
+    labelPhone: 'Número de Teléfono <span class="required">*</span>',
+    labelEventType: '¿Qué tipo de evento? <span class="required">*</span>',
+    labelGuests: 'Número estimado de invitados <span class="required">*</span>',
+    labelDate: 'Fecha Aproximada del Evento',
+    labelVenue: 'Lugar del Evento (si ya tienes uno)',
+    labelHowHeard: '¿Cómo supiste de nosotros?',
+    labelNotes: '¿Algo más que debamos saber?',
+    selectDefault: 'Selecciona el tipo de evento...',
+    selectGuestsDefault: '¿Cuántos invitados?',
+    selectHowDefault: 'Selecciona uno (opcional)...',
+    errorName: 'Por favor ingresa tu nombre',
+    errorEmail: 'Por favor ingresa un correo válido',
+    errorPhone: 'Por favor ingresa tu teléfono',
+    errorEventType: 'Por favor selecciona un tipo de evento',
+    errorGuests: 'Por favor selecciona la cantidad de invitados',
+    submitBtn: '🎁 ¡Enviar y Obtener Tu Premio!',
+    successTitle: '¡Estás dentro!',
+    successMsg: 'Gracias por visitarnos. ¡Te contactaremos pronto!',
+    prizeInstructions: '🎁 ¡Muestra esta pantalla en nuestro stand para reclamar tu premio!'
+  },
+  pt: {
+    heroTitle: 'COMEKETO CATERING',
+    heroTagline: 'Churrasco e Buffet Brasileiro',
+    prizeTitle: 'Preencha e Ganhe um Prêmio!',
+    prizeSub: 'Conta pra gente sobre o seu evento — leva só 30 segundos',
+    formTitle: '📋 Conta Pra Gente Sobre Seu Evento',
+    labelName: 'Nome Completo <span class="required">*</span>',
+    labelEmail: 'Email <span class="required">*</span>',
+    labelPhone: 'Telefone <span class="required">*</span>',
+    labelEventType: 'Que tipo de evento? <span class="required">*</span>',
+    labelGuests: 'Número estimado de convidados <span class="required">*</span>',
+    labelDate: 'Data Aproximada do Evento',
+    labelVenue: 'Local do Evento (se já tiver)',
+    labelHowHeard: 'Como soube da gente?',
+    labelNotes: 'Mais alguma coisa que a gente precisa saber?',
+    selectDefault: 'Selecione o tipo de evento...',
+    selectGuestsDefault: 'Quantos convidados?',
+    selectHowDefault: 'Selecione (opcional)...',
+    errorName: 'Por favor insira seu nome',
+    errorEmail: 'Por favor insira um email válido',
+    errorPhone: 'Por favor insira seu telefone',
+    errorEventType: 'Por favor selecione o tipo de evento',
+    errorGuests: 'Por favor selecione a quantidade de convidados',
+    submitBtn: '🎁 Enviar e Ganhar Seu Prêmio!',
+    successTitle: 'Tá dentro!',
+    successMsg: 'Valeu por passar no nosso stand. A gente entra em contato em breve!',
+    prizeInstructions: '🎁 Mostra essa tela no nosso stand pra pegar seu prêmio!'
+  }
+};
+
+let currentLang = 'en';
+function setLang(lang) {
+  currentLang = lang;
+  const t = translations[lang];
+  if (!t) return;
+
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === lang);
+  });
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (t[key] !== undefined) {
+      // Use innerHTML for labels with <span> tags
+      if (key.startsWith('label') || key.startsWith('error') || key === 'prizeInstructions') {
+        el.innerHTML = t[key];
+      } else {
+        el.textContent = t[key];
+      }
+    }
+  });
+}
+</script>
+</body>
+</html>
