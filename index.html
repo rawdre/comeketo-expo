@@ -86,18 +86,14 @@ body {
               radial-gradient(circle at 70% 60%, rgba(201,165,78,0.05) 0%, transparent 50%);
   pointer-events: none;
 }
-.hero-emoji {
-  font-size: 3rem;
+.hero-logo {
+  width: clamp(120px, 30vw, 180px);
+  height: auto;
   display: block;
-  margin-bottom: 10px;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  filter: drop-shadow(0 4px 20px rgba(201,165,78,0.5));
   animation: float 3s ease-in-out infinite;
-  filter: drop-shadow(0 4px 12px rgba(201,165,78,0.4));
-}
-.hero h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.6rem, 5vw, 2.8rem);
-  letter-spacing: 4px;
-  margin-bottom: 6px;
 }
 .hero .tagline {
   font-size: 1rem;
@@ -395,8 +391,7 @@ footer .legal {
 
 <!-- HERO -->
 <header class="hero">
-  <span class="hero-emoji">🔥</span>
-  <h1 class="shimmer-text" data-i18n="heroTitle">COMEKETO CATERING</h1>
+  <img src="comeketo-logo.png" alt="Comeketo Catering" class="hero-logo">
   <p class="tagline" data-i18n="heroTagline">Brazilian BBQ & Catering</p>
   <div class="lang-toggle">
     <button class="lang-btn active" data-lang="en" onclick="setLang('en')">🇺🇸 EN</button>
