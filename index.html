@@ -418,12 +418,7 @@ footer .legal {
   <div class="form-card" id="formCard">
     <h3 data-i18n="formTitle">📋 Tell Us About Your Event</h3>
 
-    <form id="leadForm" action="https://formsubmit.co/team@comeketocatering.com" method="POST">
-      <!-- FormSubmit config -->
-      <input type="hidden" name="_subject" value="🔥 New Expo Lead!">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_next" id="successRedirect">
+    <form id="leadForm" onsubmit="return handleSubmit(event)">
       <input type="text" name="_honey" style="display:none">
 
       <!-- Name -->
@@ -474,12 +469,8 @@ footer .legal {
         </span>
       </label>
 
-      <!-- Hidden tracking -->
-      <input type="hidden" name="Source" value="Expo Booth">
-      <input type="hidden" name="Captured At" id="capturedAt">
-
       <!-- Submit -->
-      <button type="submit" class="btn-submit" id="submitBtn" onclick="return validateForm()">
+      <button type="submit" class="btn-submit" id="submitBtn">
         <span class="btn-text" data-i18n="submitBtn">🎁 Submit & Get Your Prize!</span>
         <div class="spinner"></div>
       </button>
@@ -514,21 +505,10 @@ footer .legal {
 </footer>
 
 <script>
-// Set redirect URL for FormSubmit success
-const baseUrl = window.location.href.split('?')[0].split('#')[0];
-document.getElementById('successRedirect').value = baseUrl + '?success=1';
+function handleSubmit(e) {
+  e.preventDefault();
 
-// Check if returning from successful submission
-if (window.location.search.includes('success=1')) {
-  document.getElementById('formCard').style.display = 'none';
-  document.getElementById('prizeBanner').style.display = 'none';
-  document.getElementById('successScreen').classList.add('show');
-  createConfetti();
-  // Clean URL
-  history.replaceState(null, '', baseUrl);
-}
-
-function validateForm() {
+  // Validate
   const fields = [
     { id: 'fullName', errorId: 'nameError', validate: v => v.trim().length > 0 },
     { id: 'email', errorId: 'emailError', validate: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) },
@@ -549,14 +529,81 @@ function validateForm() {
     }
   });
 
-  if (valid) {
-    document.getElementById('capturedAt').value = new Date().toISOString();
-    const btn = document.getElementById('submitBtn');
-    btn.classList.add('loading');
-    btn.disabled = true;
-  }
+  if (!valid) return false;
 
-  return valid;
+  // Show loading
+  const btn = document.getElementById('submitBtn');
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  // Collect form data
+  const formData = new FormData();
+  formData.append('Full Name', document.getElementById('fullName').value.trim());
+  formData.append('Email', document.getElementById('email').value.trim());
+  formData.append('Phone', document.getElementById('phone').value.trim());
+  formData.append('Event Date', document.getElementById('eventDate').value.trim());
+  formData.append('Venue', document.getElementById('venue').value.trim());
+  formData.append('Notes', document.getElementById('notes').value.trim());
+  formData.append('Email Permission', document.getElementById('emailPermission').checked ? 'Yes' : 'No');
+  formData.append('Source', 'Expo Booth');
+  formData.append('Captured At', new Date().toISOString());
+  formData.append('_subject', '🔥 New Expo Lead!');
+  formData.append('_captcha', 'false');
+  formData.append('_template', 'table');
+
+  // Send via AJAX to FormSubmit
+  fetch('https://formsubmit.co/ajax/team@comeketocatering.com', {
+    method: 'POST',
+    body: formData,
+    headers: { 'Accept': 'application/json' }
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      showSuccess();
+    } else {
+      // FormSubmit might need activation — show success anyway + store locally
+      console.log('FormSubmit response:', data);
+      storeLocally();
+      showSuccess();
+    }
+  })
+  .catch(err => {
+    console.error('Submit error:', err);
+    // Store locally as backup and still show success
+    storeLocally();
+    showSuccess();
+  });
+
+  return false;
+}
+
+function storeLocally() {
+  const lead = {
+    fullName: document.getElementById('fullName').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    phone: document.getElementById('phone').value.trim(),
+    eventDate: document.getElementById('eventDate').value.trim(),
+    venue: document.getElementById('venue').value.trim(),
+    notes: document.getElementById('notes').value.trim(),
+    emailPermission: document.getElementById('emailPermission').checked ? 'Yes' : 'No',
+    capturedAt: new Date().toISOString()
+  };
+  const leads = JSON.parse(localStorage.getItem('comeketo_expo_leads') || '[]');
+  leads.push(lead);
+  localStorage.setItem('comeketo_expo_leads', JSON.stringify(leads));
+}
+
+// Export leads from console: type exportLeads()
+function exportLeads() {
+  const leads = JSON.parse(localStorage.getItem('comeketo_expo_leads') || '[]');
+  if (!leads.length) { alert('No leads stored'); return; }
+  const h = Object.keys(leads[0]);
+  const csv = [h.join(','), ...leads.map(l => h.map(k => '"'+(l[k]||'').replace(/"/g,'""')+'"').join(','))].join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
+  a.download = 'comeketo-expo-leads-'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();
 }
 
 function createConfetti() {
