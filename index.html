@@ -454,12 +454,6 @@ footer .legal {
         <input type="text" class="form-input" id="venue" name="Venue" placeholder="Venue name or 'Still looking'">
       </div>
 
-      <!-- Notes -->
-      <div class="form-group">
-        <label data-i18n="labelNotes">Anything Else We Should Know?</label>
-        <input type="text" class="form-input" id="notes" name="Notes" placeholder="Dietary needs, special requests, etc.">
-      </div>
-
       <!-- Email Permission -->
       <label class="permission-group">
         <input type="checkbox" id="emailPermission" name="Email Permission" value="Yes — send me info!">
@@ -477,7 +471,7 @@ footer .legal {
     </form>
   </div>
 
-  <!-- SUCCESS SCREEN (shown when returning from FormSubmit) -->
+  <!-- SUCCESS SCREEN -->
   <div class="success-screen" id="successScreen">
     <span class="success-icon">🎉</span>
     <h2 data-i18n="successTitle">You're In!</h2>
@@ -485,6 +479,7 @@ footer .legal {
     <div class="prize-note">
       <span data-i18n="prizeInstructions">🎁 Show this screen at our booth to claim your prize!</span>
     </div>
+    <p style="color:var(--gray-500);font-size:0.85rem;margin-top:16px;" data-i18n="redirectMsg">Taking you to our website in a moment...</p>
     <div class="social-links">
       <a href="tel:+19783811212">📞 978-381-1212</a>
       <a href="https://comeketocatering.com" target="_blank">🌐 comeketocatering.com</a>
@@ -537,19 +532,52 @@ function handleSubmit(e) {
   btn.disabled = true;
 
   // Collect form data
+  const fullName = document.getElementById('fullName').value.trim();
+  const emailPermission = document.getElementById('emailPermission').checked;
+
   const formData = new FormData();
-  formData.append('Full Name', document.getElementById('fullName').value.trim());
+  formData.append('Full Name', fullName);
   formData.append('Email', document.getElementById('email').value.trim());
   formData.append('Phone', document.getElementById('phone').value.trim());
   formData.append('Event Date', document.getElementById('eventDate').value.trim());
   formData.append('Venue', document.getElementById('venue').value.trim());
-  formData.append('Notes', document.getElementById('notes').value.trim());
-  formData.append('Email Permission', document.getElementById('emailPermission').checked ? 'Yes' : 'No');
+  formData.append('Email Permission', emailPermission ? 'Yes' : 'No');
   formData.append('Source', 'Expo Booth');
   formData.append('Captured At', new Date().toISOString());
-  formData.append('_subject', '🔥 New Expo Lead!');
+  formData.append('_subject', '🔥 New Expo Lead: ' + fullName);
   formData.append('_captcha', 'false');
   formData.append('_template', 'table');
+
+  // Auto-response email to the lead (Bullets for clients template)
+  if (emailPermission) {
+    formData.append('_autoresponse',
+`Hi ${fullName.split(' ')[0]}!
+
+Thanks for stopping by the Comeketo Catering booth — it was great meeting you! 🔥
+
+Just to give you a quick idea — we offer a few different styles:
+• Traditional Buffet
+• Formal Plated or Family-Style meals
+• Fun Churrasco (on-site grilling of meats — our signature!)
+
+Lots of great choices depending on the vibe you're going for!
+
+Check out some weddings we recently catered:
+
+🎥 Preview of What We Do: https://drive.google.com/file/d/1foxuisXYaFLwqzbdsRL21xk_XqbWkoX-/view?usp=sharing
+🎥 Wedding with BBQ Service: https://dom-12.wistia.com/medias/2m2bo1nib9
+🎥 Backyard Wedding: https://drive.google.com/file/d/11nuNuIlac8PUT3EL3_hI170Yd_Ha3PKX/view?usp=sharing
+
+📋 Full Menu & Packages: https://comeketocatering.com/#packages
+
+We'd love to help make your event unforgettable. Reply to this email or give us a call anytime!
+
+André
+Comeketo Catering
++1 (978) 381-1212
+comeketocatering.com`
+    );
+  }
 
   // Send via AJAX to FormSubmit
   fetch('https://formsubmit.co/ajax/team@comeketocatering.com', {
@@ -578,6 +606,19 @@ function handleSubmit(e) {
   return false;
 }
 
+function showSuccess() {
+  document.getElementById('formCard').style.display = 'none';
+  document.getElementById('prizeBanner').style.display = 'none';
+  const screen = document.getElementById('successScreen');
+  screen.classList.add('show');
+  createConfetti();
+
+  // Redirect to comeketocatering.com after 5 seconds
+  setTimeout(function() {
+    window.location.href = 'https://comeketocatering.com/';
+  }, 5000);
+}
+
 function storeLocally() {
   const lead = {
     fullName: document.getElementById('fullName').value.trim(),
@@ -585,7 +626,6 @@ function storeLocally() {
     phone: document.getElementById('phone').value.trim(),
     eventDate: document.getElementById('eventDate').value.trim(),
     venue: document.getElementById('venue').value.trim(),
-    notes: document.getElementById('notes').value.trim(),
     emailPermission: document.getElementById('emailPermission').checked ? 'Yes' : 'No',
     capturedAt: new Date().toISOString()
   };
@@ -663,7 +703,6 @@ const translations = {
     labelPhone: 'Phone Number <span class="required">*</span>',
     labelDate: 'Approximate Event Date',
     labelVenue: 'Venue (if you have one)',
-    labelNotes: 'Anything Else We Should Know?',
     errorName: 'Please enter your name',
     errorEmail: 'Please enter a valid email',
     errorPhone: 'Please enter your phone number',
@@ -685,7 +724,6 @@ const translations = {
     labelPhone: 'Teléfono <span class="required">*</span>',
     labelDate: 'Fecha Aproximada del Evento',
     labelVenue: 'Lugar (si ya tienes uno)',
-    labelNotes: '¿Algo más que debamos saber?',
     errorName: 'Por favor ingresa tu nombre',
     errorEmail: 'Por favor ingresa un correo válido',
     errorPhone: 'Por favor ingresa tu teléfono',
@@ -707,7 +745,6 @@ const translations = {
     labelPhone: 'Telefone <span class="required">*</span>',
     labelDate: 'Data Aproximada do Evento',
     labelVenue: 'Local do Evento (se já tiver)',
-    labelNotes: 'Mais alguma coisa?',
     errorName: 'Por favor insira seu nome',
     errorEmail: 'Por favor insira um email válido',
     errorPhone: 'Por favor insira seu telefone',
